@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:16
+    environment:
+      POSTGRES_USER: agentsys
+      POSTGRES_PASSWORD: agentsys
+      POSTGRES_DB: agentsys
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U agentsys"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  chroma:
+    image: chromadb/chroma:latest
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma-data:/chroma/chroma
+
+volumes:
+  postgres-data:
+  chroma-data:
